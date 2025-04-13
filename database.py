@@ -1,7 +1,7 @@
 import os
 import firebase_admin
 from firebase_admin import credentials, firestore, auth as admin_auth
-import pyrebase4
+import pyrebase
 from datetime import datetime
 
 # Firebase configuration
