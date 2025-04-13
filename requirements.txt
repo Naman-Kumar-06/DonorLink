@@ -7,4 +7,3 @@ sseclient
 gcloud
 oauth2client
 pycryptodome
-pkg_resources
