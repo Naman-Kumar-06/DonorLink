@@ -1,0 +1,155 @@
+BLOOD BANK MANAGEMENT SYSTEM - APPLICATION FLOW
+==============================================
+
+1. SYSTEM INITIALIZATION
+-----------------------
+- Application starts (app.py)
+- Streamlit interface is initialized
+- Firebase connection is established
+- Session state is prepared
+
+2. AUTHENTICATION PROCESS
+------------------------
+- New Users:
+  → Select "Sign Up" tab
+  → Choose role (donor/receiver)
+  → Fill personal details
+  → Create account
+  → Data stored in Firebase
+  → Redirected to role-specific dashboard
+
+- Existing Users:
+  → Enter email/password
+  → Credentials verified by Firebase
+  → Session created with user data
+  → Redirected to role-specific dashboard
+
+3. DONOR WORKFLOW
+---------------
+- View Dashboard:
+  → Personal information displayed
+  → Notification alerts shown
+  → Donation history visible
+  → Compatible blood requests listed
+
+- Update Profile:
+  → Edit personal information
+  → Update contact details
+  → Change availability status
+
+- Donation Process:
+  → View pending blood requests
+  → Check compatibility
+  → Offer to donate
+  → Record donation details
+  → Donation added to history
+  → Blood inventory updated
+
+4. RECEIVER WORKFLOW
+------------------
+- View Dashboard:
+  → Personal/organization information displayed
+  → Notification alerts shown
+  → Request history visible
+  → Available compatible donors listed
+
+- Create Blood Request:
+  → Fill request form
+  → Specify blood group and quantity
+  → Set urgency level
+  → Add patient details
+  → Submit request for approval
+
+- Manage Requests:
+  → View all request statuses
+  → Track request progress
+  → Communicate with admin
+  → Cancel requests if needed
+
+5. ADMINISTRATOR WORKFLOW
+-----------------------
+- Dashboard Overview:
+  → System statistics displayed
+  → Notification alerts shown
+  → Quick access to all modules
+
+- Inventory Management:
+  → View current blood stock levels
+  → Add new blood units to inventory
+  → Remove expired/used units
+  → Track inventory changes
+
+- Request Management:
+  → Review pending blood requests
+  → Approve or reject requests
+  → Match requests with available blood
+  → Update request status
+  → Notify requesters of status changes
+
+- Donor Management:
+  → View all registered donors
+  → Search/filter donors by criteria
+  → See donation history
+  → Send notifications to donors
+
+- Receiver Management:
+  → View all registered receivers
+  → Search/filter receivers
+  → See request history
+  → Send notifications to receivers
+
+- Reports and Analytics:
+  → View donation statistics
+  → Generate inventory reports
+  → Analyze request patterns
+
+6. DATA FLOW
+-----------
+- User Authentication:
+  app.py → auth.py → database.py → Firebase
+
+- Donor Operations:
+  app.py → donor.py → database.py → Firebase
+
+- Receiver Operations:
+  app.py → receiver.py → database.py → Firebase
+
+- Admin Operations:
+  app.py → admin.py → database.py → Firebase
+
+- Notifications:
+  database.py → User dashboards
+
+7. SESSION MANAGEMENT
+-------------------
+- Login creates session with:
+  → User ID
+  → User role
+  → User data
+
+- Session maintained throughout navigation
+- Logout clears session variables
+
+8. ERROR HANDLING
+---------------
+- Form validation before submission
+- User-friendly error messages
+- Exception handling for database operations
+- Graceful error recovery
+
+9. SECURITY MEASURES
+------------------
+- Firebase authentication for users
+- Role-based access control
+- Data validation before storage
+- Protected admin functions
+
+10. SYSTEM INTERACTIONS
+--------------------
+- Donors → Blood Inventory (donations)
+- Receivers → Blood Requests (requests)
+- Admins → System Management (approvals)
+- Real-time notifications connect all users
+
+=========================================
+NOTE: This implementation uses Firebase Authentication for user management but uses a mock database interface for demonstration purposes. In a production environment, full Firebase Firestore integration would be implemented.
