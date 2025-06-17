@@ -53,7 +53,7 @@ A comprehensive web-based blood donation management system that connects blood d
 ### 1. Clone or Download
 ```bash
 # If using Git
-git clone <repository-url>
+git clone git clone https://github.com/Naman-Kumar-06/DonorLink.git
 cd donorlink
 
 # Or download and extract the project files
@@ -172,27 +172,52 @@ The system creates a default administrator account:
 ## Project Structure
 
 ```
-donorlink/
-├── app.py                    # Main Flask application
-├── main.py                   # Application entry point
-├── models.py                 # Data models and in-memory storage
-├── database_adapter.py       # Database abstraction layer
-├── db_config.py             # Cloud database configuration
-├── firebase_config.py       # Firebase authentication setup
-├── decorators.py            # Authentication decorators
-├── email_utils.py           # Email notification utilities
-├── templates/               # HTML templates
-│   ├── base.html           # Base template
-│   ├── index.html          # Landing page
-│   ├── admin_dashboard.html # Admin interface
-│   ├── user_dashboard.html  # User interface
-│   ├── inventory_management.html # Inventory management
-│   └── ...                 # Other templates
-├── static/                  # Static assets
-│   ├── css/style.css       # Main stylesheet
-│   ├── js/main.js          # JavaScript functionality
-│   └── img/                # Images and icons
-└── README.md               # This file
+DonorLink
+│
+├── __pycache__/                     # Python bytecode cache folder
+│
+├── static/                          # Static files like CSS & JavaScript
+│   ├── css/
+│   │   └── style.css                # Stylesheet for frontend UI
+│   │
+│   └── js/
+│       ├── charts.js                # Chart rendering (e.g., blood inventory)
+│       └── main.js                  # Main frontend JS logic
+│
+├── templates/                       # HTML templates rendered by Flask
+│   ├── 404.html                     # Page not found error
+│   ├── 500.html                     # Internal server error
+│   ├── base.html                    # Base layout template
+│   ├── index.html                   # Landing page
+│   ├── login.html                   # Firebase login form
+│   ├── register.html                # Firebase signup form
+│   ├── dashboard.html               # User dashboard
+│   ├── profile.html                 # User profile view/update
+│   ├── donor_registration.html      # Donor form for users
+│   ├── blood_request.html           # Blood request form for users
+│   │
+│   ├── admin_dashboard.html         # Admin main dashboard
+│   ├── admin_donors.html            # View/approve donors
+│   ├── admin_requests.html          # View/manage blood requests
+│   └── admin_inventory.html         # Blood stock visualization
+│
+├── .env                             # Environment variables (Firebase, DB creds)
+├── app.py                           # Flask app initializer
+├── main.py                          # App runner or logic handler
+├── email_service.py                 # Handles sending emails (SMTP, etc.)
+├── models.py                        # Database models and ORM logic
+├── routes.py                        # URL route handling for user/admin
+├── utils.py                         # Helper functions (decorators, validators)
+│
+├── simple_app.py                    # Minimal Flask app (possibly test/starter)
+├── test_import.py                   # Python import testing script
+├── test_minimal.py                  # Minimal functionality test script
+│
+├── pyproject.toml                   # Python project metadata and dependencies
+├── uv.lock                          # Package lock file for `uv` environment
+│
+├── README.md                        # Project overview and instructions
+
 ```
 
 ## API Endpoints
@@ -202,8 +227,7 @@ donorlink/
 - `GET /api/blood_inventory` - Blood inventory information
 - `POST /api/update_inventory` - Update inventory levels
 
-### Authentication APIs
-- `POST /firebase_login` - Firebase authentication endpoint
+
 
 ## Configuration Options
 
@@ -290,10 +314,8 @@ For support and questions:
 
 ## Version History
 
-- **v1.0.0** (June 2025): Initial release with core functionality
-- **v1.1.0** (June 2025): Added Firebase authentication and enhanced admin dashboard
+- **v1.0.0** (May 2025): Initial release with core functionality
+- **v1.1.0** (June 2025): Added user and admin based specific functionality
 - **v1.2.0** (June 2025): Added blood inventory management and analytics
 
 ---
-
-Built with ❤️ for saving lives through technology.
