@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - DonorLink{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center min-vh-75 align-items-center">
+        <div class="col-md-6 text-center">
+            <div class="error-page">
+                <div class="error-code mb-4">
+                    <h1 class="display-1 text-danger fw-bold">500</h1>
+                </div>
+                <div class="error-message mb-4">
+                    <h3 class="text-secondary mb-3">Internal Server Error</h3>
+                    <p class="text-muted lead">
+                        Something went wrong on our end. We're working to fix this issue as quickly as possible.
+                    </p>
+                </div>
+                
+                <div class="alert alert-info border-0 mb-4">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-info-circle me-2"></i>What can you do?
+                    </h6>
+                    <ul class="mb-0 text-start small">
+                        <li>Try refreshing the page</li>
+                        <li>Go back to the previous page</li>
+                        <li>Contact our support team if the problem persists</li>
+                        <li>For medical emergencies, call 911 immediately</li>
+                    </ul>
+                </div>
+                
+                <div class="error-actions">
+                    <button onclick="window.location.reload()" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-refresh me-2"></i>Try Again
+                    </button>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-home me-2"></i>Go Home
+                    </a>
+                </div>
+                
+                <div class="mt-5">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h6 class="card-title mb-0">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Emergency?
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-2">
+                                If this is a medical emergency requiring immediate blood transfusion, 
+                                <strong>do not rely on this system</strong>.
+                            </p>
+                            <div class="d-grid">
+                                <a href="tel:911" class="btn btn-danger">
+                                    <i class="fas fa-phone me-2"></i>Call 911 Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <small class="text-muted">
+                        Error Reference: 500-{{ moment().format('YYYYMMDD-HHmmss') if moment else 'SERVER-ERROR' }}
+                        <br>
+                        If you need to report this issue, please include the reference number above.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

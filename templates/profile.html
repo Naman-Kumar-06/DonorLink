@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - DonorLink{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row">
+        <!-- Profile Info Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="avatar-large bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; font-size: 2.5rem;">
+                        {{ user.first_name[0] }}{{ user.last_name[0] }}
+                    </div>
+                    <h4 class="card-title text-primary fw-bold">{{ user.first_name }} {{ user.last_name }}</h4>
+                    <p class="text-muted mb-3">{{ user.email }}</p>
+                    
+                    {% if user.is_admin %}
+                        <span class="badge bg-warning fs-6 mb-3">
+                            <i class="fas fa-user-shield me-1"></i>Administrator
+                        </span>
+                    {% endif %}
+                    
+                    <div class="text-muted small">
+                        <div class="mb-1">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            Member since {{ user.created_at.strftime('%B %Y') }}
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle me-2 text-success"></i>
+                            Account Active
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Information -->
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-user me-2"></i>Account Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">First Name</label>
+                                <div class="form-control-plaintext">{{ user.first_name }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">Last Name</label>
+                                <div class="form-control-plaintext">{{ user.last_name }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-muted">Email Address</label>
+                        <div class="form-control-plaintext">{{ user.email }}</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">Account Type</label>
+                                <div class="form-control-plaintext">
+                                    {% if user.is_admin %}
+                                        <span class="badge bg-warning">Administrator</span>
+                                    {% else %}
+                                        <span class="badge bg-primary">User</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">Member Since</label>
+                                <div class="form-control-plaintext">{{ user.created_at.strftime('%B %d, %Y') }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donor Information (if applicable) -->
+    {% if donor %}
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-heart me-2"></i>Donor Profile
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Donor Status -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-light border-0 h-100">
+                                <div class="card-body text-center">
+                                    {% if donor.is_approved %}
+                                        <i class="fas fa-check-circle text-success mb-2" style="font-size: 2rem;"></i>
+                                        <h6 class="text-success">Approved Donor</h6>
+                                        <small class="text-muted">Ready to save lives</small>
+                                    {% else %}
+                                        <i class="fas fa-clock text-warning mb-2" style="font-size: 2rem;"></i>
+                                        <h6 class="text-warning">Pending Approval</h6>
+                                        <small class="text-muted">Application under review</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-light border-0 h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-tint text-danger mb-2" style="font-size: 2rem;"></i>
+                                    <h6>Blood Type</h6>
+                                    <span class="badge bg-danger fs-5">{{ donor.blood_type }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-light border-0 h-100">
+                                <div class="card-body text-center">
+                                    {% if donor.can_donate() %}
+                                        <i class="fas fa-heart text-success mb-2" style="font-size: 2rem;"></i>
+                                        <h6 class="text-success">Eligible to Donate</h6>
+                                        <small class="text-muted">Can donate now</small>
+                                    {% else %}
+                                        <i class="fas fa-calendar-times text-warning mb-2" style="font-size: 2rem;"></i>
+                                        <h6 class="text-warning">Wait Period Active</h6>
+                                        <small class="text-muted">Must wait between donations</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Donor Details -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-danger mb-3">Personal Details</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold text-muted">Age</label>
+                                        <div class="form-control-plaintext">{{ donor.age }} years</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold text-muted">Weight</label>
+                                        <div class="form-control-plaintext">{{ donor.weight }} kg</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">Phone Number</label>
+                                <div class="form-control-plaintext">{{ donor.phone }}</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">Address</label>
+                                <div class="form-control-plaintext">{{ donor.address }}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6 class="text-danger mb-3">Donation History</h6>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">Last Donation</label>
+                                <div class="form-control-plaintext">
+                                    {% if donor.last_donation_date %}
+                                        {{ donor.last_donation_date.strftime('%B %d, %Y') }}
+                                    {% else %}
+                                        <span class="text-muted">Never donated</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">Registration Date</label>
+                                <div class="form-control-plaintext">{{ donor.created_at.strftime('%B %d, %Y') }}</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted">Availability Status</label>
+                                <div class="form-control-plaintext">
+                                    {% if donor.is_available %}
+                                        <span class="badge bg-success">Available</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Unavailable</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Become a Donor CTA -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body text-center p-5">
+                    <i class="fas fa-heart text-danger mb-3" style="font-size: 4rem;"></i>
+                    <h4 class="text-primary mb-3">Become a Life-Saver</h4>
+                    <p class="text-muted mb-4">
+                        You haven't registered as a blood donor yet. Join our community of heroes 
+                        and help save lives through blood donation.
+                    </p>
+                    <a href="{{ url_for('donor_registration') }}" class="btn btn-danger btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Register as Donor
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-bolt me-2 text-warning"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="{{ url_for('blood_request') }}" class="btn btn-outline-success w-100">
+                                <i class="fas fa-plus-circle me-2"></i>Request Blood
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            {% if not donor %}
+                                <a href="{{ url_for('donor_registration') }}" class="btn btn-outline-danger w-100">
+                                    <i class="fas fa-user-plus me-2"></i>Become Donor
+                                </a>
+                            {% else %}
+                                <button class="btn btn-outline-secondary w-100" disabled>
+                                    <i class="fas fa-check me-2"></i>Already a Donor
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

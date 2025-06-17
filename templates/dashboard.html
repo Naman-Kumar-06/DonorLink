@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - DonorLink{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white border-0">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="card-title mb-2">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Welcome back, {{ user.first_name }}!
+                            </h2>
+                            <p class="card-text mb-0 opacity-75">
+                                Thank you for being part of the DonorLink community. 
+                                {% if donor and donor.is_approved %}
+                                    You're ready to save lives!
+                                {% elif donor %}
+                                    Your donor application is under review.
+                                {% else %}
+                                    Consider becoming a donor to help save lives.
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <i class="fas fa-heart text-danger" style="font-size: 4rem; opacity: 0.8;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Left Column - Quick Actions -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-bolt me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        {% if not donor %}
+                            <a href="{{ url_for('donor_registration') }}" class="btn btn-danger btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Become a Donor
+                            </a>
+                        {% endif %}
+                        
+                        <a href="{{ url_for('blood_request') }}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>Request Blood
+                        </a>
+                        
+                        <a href="{{ url_for('profile') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-user me-2"></i>View Profile
+                        </a>
+                    </div>
+                    
+                    {% if donor %}
+                    <hr>
+                    <div class="donor-status">
+                        <h6 class="text-muted mb-2">Donor Status</h6>
+                        {% if donor.is_approved %}
+                            <div class="alert alert-success d-flex align-items-center py-2">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <small><strong>Approved</strong> - Ready to donate</small>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning d-flex align-items-center py-2">
+                                <i class="fas fa-clock me-2"></i>
+                                <small><strong>Pending</strong> - Under review</small>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="small text-muted">
+                            <div class="mb-1">
+                                <strong>Blood Type:</strong> 
+                                <span class="badge bg-danger">{{ donor.blood_type }}</span>
+                            </div>
+                            {% if donor.can_donate() %}
+                                <div class="text-success">
+                                    <i class="fas fa-check me-1"></i>Eligible to donate
+                                </div>
+                            {% else %}
+                                <div class="text-warning">
+                                    <i class="fas fa-clock me-1"></i>Wait period active
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Blood Requests -->
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-bottom">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-list me-2 text-primary"></i>Your Blood Requests
+                        </h5>
+                        <span class="badge bg-primary">{{ requests|length }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if requests %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Blood Type</th>
+                                        <th>Units</th>
+                                        <th>Urgency</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for request in requests %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ request.patient_name }}</strong>
+                                            <br><small class="text-muted">{{ request.hospital }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-danger">{{ request.blood_type }}</span>
+                                        </td>
+                                        <td>{{ request.units_needed }}</td>
+                                        <td>
+                                            {% if request.urgency == 'critical' %}
+                                                <span class="badge bg-danger">Critical</span>
+                                            {% elif request.urgency == 'urgent' %}
+                                                <span class="badge bg-warning">Urgent</span>
+                                            {% else %}
+                                                <span class="badge bg-info">Normal</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if request.status == 'fulfilled' %}
+                                                <span class="badge bg-success">Fulfilled</span>
+                                            {% elif request.status == 'approved' %}
+                                                <span class="badge bg-primary">Approved</span>
+                                            {% elif request.status == 'pending' %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ request.status.title() }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                {{ moment(request.created_at).format('MMM DD, YYYY') if moment else request.created_at.strftime('%b %d, %Y') }}
+                                            </small>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-clipboard-list text-muted" style="font-size: 3rem;"></i>
+                            <h5 class="text-muted mt-3">No blood requests yet</h5>
+                            <p class="text-muted">
+                                When you submit a blood request, it will appear here with its current status.
+                            </p>
+                            <a href="{{ url_for('blood_request') }}" class="btn btn-primary">
+                                <i class="fas fa-plus-circle me-2"></i>Submit Request
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Cards -->
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body text-center">
+                    <i class="fas fa-info-circle text-primary mb-2" style="font-size: 2rem;"></i>
+                    <h6 class="card-title">Donation Guidelines</h6>
+                    <p class="card-text small text-muted">
+                        You must wait 56 days between whole blood donations and be in good health.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body text-center">
+                    <i class="fas fa-bell text-warning mb-2" style="font-size: 2rem;"></i>
+                    <h6 class="card-title">Stay Notified</h6>
+                    <p class="card-text small text-muted">
+                        Get email notifications when someone needs your blood type or your requests are updated.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body text-center">
+                    <i class="fas fa-life-ring text-success mb-2" style="font-size: 2rem;"></i>
+                    <h6 class="card-title">Emergency Support</h6>
+                    <p class="card-text small text-muted">
+                        For urgent medical emergencies, always call 911 immediately.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}DonorLink - Save Lives Through Blood Donation{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Save Lives Through
+                        <span class="text-danger">Blood Donation</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        Connect with blood donors and patients in need. Join our community of life-savers
+                        and make a difference in someone's life today.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('register') }}" class="btn btn-danger btn-lg me-3 mb-2">
+                            <i class="fas fa-user-plus me-2"></i>Get Started
+                        </a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg mb-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image text-center">
+                    <div class="blood-drop-animation">
+                        <i class="fas fa-tint text-danger" style="font-size: 8rem; opacity: 0.8;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold text-primary mb-3">How DonorLink Works</h2>
+                <p class="lead text-muted">Simple steps to save lives and get help when needed</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-user-plus text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="card-title text-primary fw-bold">Register</h4>
+                        <p class="card-text text-muted">
+                            Create your account and complete your donor profile with blood type and health information.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-search text-success" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="card-title text-success fw-bold">Match</h4>
+                        <p class="card-text text-muted">
+                            Our smart algorithm matches blood requests with compatible donors in your area.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-heart text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="card-title text-danger fw-bold">Save Lives</h4>
+                        <p class="card-text text-muted">
+                            Donate blood and receive instant notifications when someone needs your blood type.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-12 mb-4">
+                <h2 class="display-6 fw-bold text-primary">Making a Difference</h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon mb-2">
+                        <i class="fas fa-users text-primary" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h3 class="stat-number text-primary fw-bold mb-1">1000+</h3>
+                    <p class="stat-label text-muted mb-0">Registered Donors</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon mb-2">
+                        <i class="fas fa-tint text-danger" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h3 class="stat-number text-danger fw-bold mb-1">500+</h3>
+                    <p class="stat-label text-muted mb-0">Units Donated</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon mb-2">
+                        <i class="fas fa-heart text-success" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h3 class="stat-number text-success fw-bold mb-1">300+</h3>
+                    <p class="stat-label text-muted mb-0">Lives Saved</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon mb-2">
+                        <i class="fas fa-hospital text-warning" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h3 class="stat-number text-warning fw-bold mb-1">50+</h3>
+                    <p class="stat-label text-muted mb-0">Partner Hospitals</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blood Types Info Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-6 fw-bold text-primary">Blood Type Compatibility</h2>
+                <p class="lead text-muted">Understanding blood compatibility can help save more lives</p>
+            </div>
+        </div>
+        
+        <div class="row g-3">
+            <div class="col-md-3 col-sm-6">
+                <div class="card blood-type-card border-danger">
+                    <div class="card-body text-center">
+                        <h3 class="text-danger fw-bold">O-</h3>
+                        <p class="small text-muted mb-0">Universal Donor</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card blood-type-card border-primary">
+                    <div class="card-body text-center">
+                        <h3 class="text-primary fw-bold">O+</h3>
+                        <p class="small text-muted mb-0">Most Common</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card blood-type-card border-success">
+                    <div class="card-body text-center">
+                        <h3 class="text-success fw-bold">AB+</h3>
+                        <p class="small text-muted mb-0">Universal Receiver</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card blood-type-card border-warning">
+                    <div class="card-body text-center">
+                        <h3 class="text-warning fw-bold">A, B, AB</h3>
+                        <p class="small text-muted mb-0">Other Types</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-12">
+                <h2 class="display-6 fw-bold mb-3">Ready to Save Lives?</h2>
+                <p class="lead mb-4">
+                    Join thousands of donors who are making a difference in their communities.
+                    Every donation can save up to 3 lives.
+                </p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('register') }}" class="btn btn-danger btn-lg me-3 mb-2">
+                        <i class="fas fa-heart me-2"></i>Become a Donor
+                    </a>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-light btn-lg mb-2">
+                        <i class="fas fa-plus-circle me-2"></i>Request Blood
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Add simple animations for hero section
+    document.addEventListener('DOMContentLoaded', function() {
+        const bloodDrop = document.querySelector('.blood-drop-animation i');
+        if (bloodDrop) {
+            setInterval(() => {
+                bloodDrop.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    bloodDrop.style.transform = 'scale(1)';
+                }, 500);
+            }, 2000);
+        }
+    });
+</script>
+{% endblock %}

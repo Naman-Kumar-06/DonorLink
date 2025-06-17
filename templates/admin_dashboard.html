@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - DonorLink{% endblock %}
+
+{% block content %}
+<div class="container-fluid my-4">
+    <!-- Admin Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white border-0">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="card-title mb-2">
+                                <i class="fas fa-user-shield me-2"></i>
+                                Admin Dashboard
+                            </h2>
+                            <p class="card-text mb-0 opacity-75">
+                                Monitor blood donation activities, manage donors and requests, track inventory levels.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <i class="fas fa-chart-line text-white" style="font-size: 4rem; opacity: 0.8;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Critical Alerts -->
+    {% if alerts %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Critical Alerts
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for alert in alerts %}
+                    <div class="alert alert-{% if alert.severity == 'critical' %}danger{% else %}warning{% endif %} d-flex align-items-center mb-2">
+                        <i class="fas fa-{% if alert.type == 'low_inventory' %}flask{% else %}heartbeat{% endif %} me-2"></i>
+                        <span>{{ alert.message }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm bg-primary text-white">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="card-title fw-bold mb-1">{{ analytics.total_donors }}</h5>
+                            <p class="card-text small mb-0 opacity-75">Total Donors</p>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users" style="font-size: 2rem; opacity: 0.7;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm bg-success text-white">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="card-title fw-bold mb-1">{{ analytics.approved_donors }}</h5>
+                            <p class="card-text small mb-0 opacity-75">Approved Donors</p>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle" style="font-size: 2rem; opacity: 0.7;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm bg-warning text-white">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="card-title fw-bold mb-1">{{ analytics.pending_requests }}</h5>
+                            <p class="card-text small mb-0 opacity-75">Pending Requests</p>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock" style="font-size: 2rem; opacity: 0.7;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm bg-danger text-white">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="card-title fw-bold mb-1">{{ analytics.fulfilled_requests }}</h5>
+                            <p class="card-text small mb-0 opacity-75">Fulfilled Requests</p>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-heart" style="font-size: 2rem; opacity: 0.7;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Navigation -->
+    <div class="row">
+        <!-- Charts Column -->
+        <div class="col-lg-8 mb-4">
+            <!-- Blood Type Distribution Chart -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-pie me-2 text-primary"></i>Blood Type Distribution
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="bloodTypeChart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+            
+            <!-- Request Urgency Chart -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar me-2 text-success"></i>Request Urgency Levels
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="urgencyChart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions Column -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-bolt me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('admin_donors') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-users me-2"></i>Manage Donors
+                            <span class="badge bg-warning ms-2">{{ analytics.pending_donors }}</span>
+                        </a>
+                        
+                        <a href="{{ url_for('admin_requests') }}" class="btn btn-outline-success">
+                            <i class="fas fa-list me-2"></i>Manage Requests
+                            <span class="badge bg-danger ms-2">{{ analytics.pending_requests }}</span>
+                        </a>
+                        
+                        <a href="{{ url_for('admin_inventory') }}" class="btn btn-outline-warning">
+                            <i class="fas fa-flask me-2"></i>Blood Inventory
+                        </a>
+                    </div>
+                    
+                    <hr class="my-3">
+                    
+                    <!-- Recent Activity -->
+                    <h6 class="text-muted mb-2">
+                        <i class="fas fa-activity me-2"></i>Recent Activity (30 days)
+                    </h6>
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted">New Donors:</span>
+                            <span class="fw-semibold text-success">{{ analytics.recent_donors }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted">New Requests:</span>
+                            <span class="fw-semibold text-primary">{{ analytics.recent_requests }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Total Users:</span>
+                            <span class="fw-semibold text-info">{{ analytics.total_donors + analytics.total_requests }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Info Cards -->
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body text-center">
+                    <i class="fas fa-shield-alt text-primary mb-2" style="font-size: 2rem;"></i>
+                    <h6 class="card-title">System Status</h6>
+                    <p class="card-text small text-muted">
+                        All systems operational. Email notifications active.
+                    </p>
+                    <span class="badge bg-success">Online</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body text-center">
+                    <i class="fas fa-database text-info mb-2" style="font-size: 2rem;"></i>
+                    <h6 class="card-title">Data Storage</h6>
+                    <p class="card-text small text-muted">
+                        In-memory storage active. Data persists during session.
+                    </p>
+                    <span class="badge bg-info">Active</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body text-center">
+                    <i class="fas fa-envelope text-warning mb-2" style="font-size: 2rem;"></i>
+                    <h6 class="card-title">Email Service</h6>
+                    <p class="card-text small text-muted">
+                        SMTP configuration ready for notifications.
+                    </p>
+                    <span class="badge bg-warning">Ready</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Blood Type Distribution Chart
+    const bloodTypeCtx = document.getElementById('bloodTypeChart').getContext('2d');
+    const bloodTypeChart = new Chart(bloodTypeCtx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys({{ analytics.blood_type_distribution | tojson }}),
+            datasets: [{
+                data: Object.values({{ analytics.blood_type_distribution | tojson }}),
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                    '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Request Urgency Chart
+    const urgencyCtx = document.getElementById('urgencyChart').getContext('2d');
+    const urgencyChart = new Chart(urgencyCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys({{ analytics.urgency_distribution | tojson }}).map(key => key.charAt(0).toUpperCase() + key.slice(1)),
+            datasets: [{
+                label: 'Number of Requests',
+                data: Object.values({{ analytics.urgency_distribution | tojson }}),
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

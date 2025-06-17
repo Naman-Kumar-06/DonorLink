@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - DonorLink{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center min-vh-75 align-items-center">
+        <div class="col-md-6 text-center">
+            <div class="error-page">
+                <div class="error-code mb-4">
+                    <h1 class="display-1 text-primary fw-bold">404</h1>
+                </div>
+                <div class="error-message mb-4">
+                    <h3 class="text-secondary mb-3">Oops! Page Not Found</h3>
+                    <p class="text-muted lead">
+                        The page you're looking for doesn't exist or has been moved to a different location.
+                    </p>
+                </div>
+                <div class="error-actions">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-home me-2"></i>Go Home
+                    </a>
+                    {% if session.user_id %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-5">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <i class="fas fa-heart text-danger" style="font-size: 2rem;"></i>
+                                <h5 class="mt-2">Save Lives</h5>
+                                <p class="small text-muted">Become a blood donor and help save lives in your community.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <i class="fas fa-search text-primary" style="font-size: 2rem;"></i>
+                                <h5 class="mt-2">Find Donors</h5>
+                                <p class="small text-muted">Connect with compatible blood donors when you need help.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <i class="fas fa-users text-success" style="font-size: 2rem;"></i>
+                                <h5 class="mt-2">Join Community</h5>
+                                <p class="small text-muted">Be part of a community dedicated to helping others.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

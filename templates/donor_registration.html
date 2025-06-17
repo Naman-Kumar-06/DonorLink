@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}Donor Registration - DonorLink{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Become a Blood Donor
+                    </h3>
+                    <p class="card-text mb-0 mt-2 opacity-75">
+                        Join our community of life-savers. Your donation can save up to 3 lives.
+                    </p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- Eligibility Info -->
+                    <div class="alert alert-info border-0 mb-4">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-info-circle me-2"></i>Donor Eligibility Requirements
+                        </h6>
+                        <ul class="mb-0 small">
+                            <li>Age: 18-65 years old</li>
+                            <li>Weight: At least 50 kg (110 lbs)</li>
+                            <li>Good general health</li>
+                            <li>No recent illness or medication that affects donation</li>
+                        </ul>
+                    </div>
+                    
+                    <form method="POST">
+                        <!-- Personal Information -->
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-user me-2"></i>Personal Information
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="blood_type" class="form-label fw-semibold">
+                                        <i class="fas fa-tint me-2 text-danger"></i>Blood Type *
+                                    </label>
+                                    <select class="form-select" id="blood_type" name="blood_type" required>
+                                        <option value="">Select your blood type</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                    <div class="form-text">
+                                        <small class="text-muted">If unsure, consult your doctor or get tested</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label fw-semibold">
+                                        <i class="fas fa-phone me-2 text-primary"></i>Phone Number *
+                                    </label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" 
+                                           placeholder="Enter your phone number" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="age" class="form-label fw-semibold">
+                                        <i class="fas fa-birthday-cake me-2 text-primary"></i>Age *
+                                    </label>
+                                    <input type="number" class="form-control" id="age" name="age" 
+                                           placeholder="Your age" min="18" max="65" required>
+                                    <div class="form-text">
+                                        <small class="text-muted">Must be between 18-65 years</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="weight" class="form-label fw-semibold">
+                                        <i class="fas fa-weight me-2 text-primary"></i>Weight (kg) *
+                                    </label>
+                                    <input type="number" class="form-control" id="weight" name="weight" 
+                                           placeholder="Weight in kg" min="50" step="0.1" required>
+                                    <div class="form-text">
+                                        <small class="text-muted">Minimum 50 kg required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="address" class="form-label fw-semibold">
+                                <i class="fas fa-map-marker-alt me-2 text-primary"></i>Address *
+                            </label>
+                            <textarea class="form-control" id="address" name="address" rows="3" 
+                                      placeholder="Enter your complete address" required></textarea>
+                        </div>
+                        
+                        <!-- Medical History -->
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-stethoscope me-2"></i>Medical Information
+                        </h5>
+                        
+                        <div class="mb-3">
+                            <label for="last_donation_date" class="form-label fw-semibold">
+                                <i class="fas fa-calendar me-2 text-primary"></i>Last Donation Date
+                            </label>
+                            <input type="date" class="form-control" id="last_donation_date" name="last_donation_date">
+                            <div class="form-text">
+                                <small class="text-muted">Leave empty if you've never donated blood before</small>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="medical_conditions" class="form-label fw-semibold">
+                                <i class="fas fa-notes-medical me-2 text-primary"></i>Medical Conditions
+                            </label>
+                            <textarea class="form-control" id="medical_conditions" name="medical_conditions" rows="2" 
+                                      placeholder="List any current medical conditions (optional)"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="medications" class="form-label fw-semibold">
+                                <i class="fas fa-pills me-2 text-primary"></i>Current Medications
+                            </label>
+                            <textarea class="form-control" id="medications" name="medications" rows="2" 
+                                      placeholder="List any medications you're currently taking (optional)"></textarea>
+                        </div>
+                        
+                        <!-- Terms and Conditions -->
+                        <div class="card bg-light border-0 mb-4">
+                            <div class="card-body">
+                                <h6 class="card-title text-primary">
+                                    <i class="fas fa-shield-alt me-2"></i>Donor Agreement
+                                </h6>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="health_declaration" required>
+                                    <label class="form-check-label small" for="health_declaration">
+                                        I declare that I am in good health and have answered all questions truthfully.
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="contact_consent" required>
+                                    <label class="form-check-label small" for="contact_consent">
+                                        I consent to be contacted when there are compatible blood requests.
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms_agreement" required>
+                                    <label class="form-check-label small" for="terms_agreement">
+                                        I agree to the <a href="#" class="text-primary">terms and conditions</a> 
+                                        and understand that my information will be used for donation matching.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 d-md-flex">
+                            <button type="submit" class="btn btn-danger btn-lg flex-md-fill">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Application
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Additional Information -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-md text-primary mb-2" style="font-size: 2rem;"></i>
+                            <h6 class="card-title">Medical Screening</h6>
+                            <p class="card-text small text-muted">
+                                All donors undergo thorough medical screening to ensure safety for both donor and recipient.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock text-success mb-2" style="font-size: 2rem;"></i>
+                            <h6 class="card-title">Approval Process</h6>
+                            <p class="card-text small text-muted">
+                                Applications are typically reviewed within 24-48 hours. You'll receive an email notification.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Request - DonorLink{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-plus-circle me-2"></i>Submit Blood Request
+                    </h3>
+                    <p class="card-text mb-0 mt-2 opacity-75">
+                        Request blood for yourself or someone in need. We'll find compatible donors for you.
+                    </p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- Emergency Notice -->
+                    <div class="alert alert-warning border-0 mb-4">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Emergency Notice
+                        </h6>
+                        <p class="mb-0 small">
+                            For life-threatening emergencies, call <strong>911</strong> immediately. 
+                            This system is for planned blood needs and urgent requests, not emergency situations.
+                        </p>
+                    </div>
+                    
+                    <form method="POST">
+                        <!-- Patient Information -->
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-user-injured me-2"></i>Patient Information
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="patient_name" class="form-label fw-semibold">
+                                        <i class="fas fa-user me-2 text-primary"></i>Patient Name *
+                                    </label>
+                                    <input type="text" class="form-control" id="patient_name" name="patient_name" 
+                                           placeholder="Full name of patient" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="contact_phone" class="form-label fw-semibold">
+                                        <i class="fas fa-phone me-2 text-primary"></i>Contact Phone *
+                                    </label>
+                                    <input type="tel" class="form-control" id="contact_phone" name="contact_phone" 
+                                           placeholder="Primary contact number" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Blood Requirements -->
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-tint me-2"></i>Blood Requirements
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="blood_type" class="form-label fw-semibold">
+                                        <i class="fas fa-tint me-2 text-danger"></i>Blood Type *
+                                    </label>
+                                    <select class="form-select" id="blood_type" name="blood_type" required>
+                                        <option value="">Select blood type</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="units_needed" class="form-label fw-semibold">
+                                        <i class="fas fa-flask me-2 text-primary"></i>Units Needed *
+                                    </label>
+                                    <select class="form-select" id="units_needed" name="units_needed" required>
+                                        <option value="">Select units</option>
+                                        <option value="1">1 Unit</option>
+                                        <option value="2">2 Units</option>
+                                        <option value="3">3 Units</option>
+                                        <option value="4">4 Units</option>
+                                        <option value="5">5 Units</option>
+                                        <option value="6">6 Units</option>
+                                        <option value="7">7 Units</option>
+                                        <option value="8">8 Units</option>
+                                        <option value="9">9 Units</option>
+                                        <option value="10">10 Units</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="urgency" class="form-label fw-semibold">
+                                        <i class="fas fa-exclamation-circle me-2 text-primary"></i>Urgency Level *
+                                    </label>
+                                    <select class="form-select" id="urgency" name="urgency" required>
+                                        <option value="">Select urgency</option>
+                                        <option value="normal">Normal - Within 1 week</option>
+                                        <option value="urgent">Urgent - Within 24-48 hours</option>
+                                        <option value="critical">Critical - Immediate need</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hospital Information -->
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-hospital me-2"></i>Hospital Information
+                        </h5>
+                        
+                        <div class="mb-3">
+                            <label for="hospital" class="form-label fw-semibold">
+                                <i class="fas fa-hospital me-2 text-primary"></i>Hospital/Medical Center *
+                            </label>
+                            <input type="text" class="form-control" id="hospital" name="hospital" 
+                                   placeholder="Name and address of hospital or medical center" required>
+                            <div class="form-text">
+                                <small class="text-muted">Include full name and address where donation should be made</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Medical Information -->
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-notes-medical me-2"></i>Medical Information
+                        </h5>
+                        
+                        <div class="mb-4">
+                            <label for="medical_condition" class="form-label fw-semibold">
+                                <i class="fas fa-stethoscope me-2 text-primary"></i>Medical Condition/Reason
+                            </label>
+                            <textarea class="form-control" id="medical_condition" name="medical_condition" rows="3" 
+                                      placeholder="Briefly describe the medical condition or reason for blood need (optional but helpful for donor motivation)"></textarea>
+                            <div class="form-text">
+                                <small class="text-muted">This information helps donors understand the importance of their contribution</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Urgency Information Card -->
+                        <div class="card bg-light border-0 mb-4">
+                            <div class="card-body">
+                                <h6 class="card-title text-primary">
+                                    <i class="fas fa-info-circle me-2"></i>Urgency Level Guide
+                                </h6>
+                                <div class="row small">
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <span class="badge bg-info me-2">Normal</span>
+                                            <br><small class="text-muted">Planned surgery, routine treatment</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <span class="badge bg-warning me-2">Urgent</span>
+                                            <br><small class="text-muted">Surgery within 48 hours</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <span class="badge bg-danger me-2">Critical</span>
+                                            <br><small class="text-muted">Emergency surgery, trauma</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 d-md-flex">
+                            <button type="submit" class="btn btn-primary btn-lg flex-md-fill">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Blood Request
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Information Cards -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-search text-primary mb-2" style="font-size: 2rem;"></i>
+                            <h6 class="card-title">Smart Matching</h6>
+                            <p class="card-text small text-muted">
+                                Our system automatically finds compatible donors based on blood type and location.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-bell text-warning mb-2" style="font-size: 2rem;"></i>
+                            <h6 class="card-title">Instant Notifications</h6>
+                            <p class="card-text small text-muted">
+                                Compatible donors receive immediate notifications for urgent and critical requests.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-shield-alt text-success mb-2" style="font-size: 2rem;"></i>
+                            <h6 class="card-title">Privacy Protected</h6>
+                            <p class="card-text small text-muted">
+                                Your personal information is protected and only shared with verified medical facilities.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-select critical urgency and show warning for emergency cases
+    document.getElementById('urgency').addEventListener('change', function() {
+        const urgency = this.value;
+        const alertContainer = document.querySelector('.alert-warning');
+        
+        if (urgency === 'critical') {
+            alertContainer.classList.remove('alert-warning');
+            alertContainer.classList.add('alert-danger');
+            alertContainer.innerHTML = `
+                <h6 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Critical Request Notice
+                </h6>
+                <p class="mb-0 small">
+                    For immediate life-threatening emergencies, call <strong>911</strong> now. 
+                    Critical requests are processed immediately and compatible donors are notified instantly.
+                </p>
+            `;
+        } else {
+            alertContainer.classList.remove('alert-danger');
+            alertContainer.classList.add('alert-warning');
+            alertContainer.innerHTML = `
+                <h6 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Emergency Notice
+                </h6>
+                <p class="mb-0 small">
+                    For life-threatening emergencies, call <strong>911</strong> immediately. 
+                    This system is for planned blood needs and urgent requests, not emergency situations.
+                </p>
+            `;
+        }
+    });
+</script>
+{% endblock %}

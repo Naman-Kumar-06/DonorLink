@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Donors - Admin - DonorLink{% endblock %}
+
+{% block content %}
+<div class="container-fluid my-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white border-0">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="card-title mb-2">
+                                <i class="fas fa-users me-2"></i>
+                                Donor Management
+                            </h2>
+                            <p class="card-text mb-0 opacity-75">
+                                Review and approve donor applications, manage donor profiles and eligibility status.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="text-center me-3">
+                                    <h4 class="mb-0">{{ donors|length }}</h4>
+                                    <small class="opacity-75">Total Donors</small>
+                                </div>
+                                <i class="fas fa-user-check" style="font-size: 3rem; opacity: 0.7;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-success text-white">
+                <div class="card-body text-center">
+                    <h4 class="fw-bold">{{ donors|selectattr('donor.is_approved')|list|length }}</h4>
+                    <small>Approved Donors</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-warning text-white">
+                <div class="card-body text-center">
+                    <h4 class="fw-bold">{{ donors|rejectattr('donor.is_approved')|list|length }}</h4>
+                    <small>Pending Approval</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-info text-white">
+                <div class="card-body text-center">
+                    <h4 class="fw-bold">{{ donors|selectattr('donor.can_donate')|list|length }}</h4>
+                    <small>Eligible to Donate</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-primary text-white">
+                <div class="card-body text-center">
+                    <h4 class="fw-bold">{{ donors|selectattr('donor.is_available')|list|length }}</h4>
+                    <small>Available Donors</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donors Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-list me-2 text-primary"></i>All Donors
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-select form-select-sm" id="statusFilter">
+                                        <option value="">All Status</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="pending">Pending</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select form-select-sm" id="bloodTypeFilter">
+                                        <option value="">All Blood Types</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    {% if donors %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="donorsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Donor Info</th>
+                                        <th>Blood Type</th>
+                                        <th>Age/Weight</th>
+                                        <th>Contact</th>
+                                        <th>Last Donation</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for donor_data in donors %}
+                                    {% set donor = donor_data.donor %}
+                                    {% set user = donor_data.user %}
+                                    <tr data-status="{{ 'approved' if donor.is_approved else 'pending' }}" 
+                                        data-blood-type="{{ donor.blood_type }}">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-initial bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    {{ user.first_name[0] }}{{ user.last_name[0] }}
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 fw-semibold">{{ user.first_name }} {{ user.last_name }}</h6>
+                                                    <small class="text-muted">{{ user.email }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-danger fs-6">{{ donor.blood_type }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                <div><strong>Age:</strong> {{ donor.age }} years</div>
+                                                <div><strong>Weight:</strong> {{ donor.weight }} kg</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                <div><i class="fas fa-phone me-1"></i>{{ donor.phone }}</div>
+                                                <div><i class="fas fa-map-marker-alt me-1"></i>{{ donor.address[:30] }}{% if donor.address|length > 30 %}...{% endif %}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if donor.last_donation_date %}
+                                                <div class="small">
+                                                    {{ donor.last_donation_date.strftime('%b %d, %Y') }}
+                                                    <br>
+                                                    {% if donor.can_donate() %}
+                                                        <span class="badge bg-success">Can Donate</span>
+                                                    {% else %}
+                                                        <span class="badge bg-warning">Wait Period</span>
+                                                    {% endif %}
+                                                </div>
+                                            {% else %}
+                                                <div class="small text-muted">
+                                                    Never donated
+                                                    <br>
+                                                    <span class="badge bg-success">Can Donate</span>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if donor.is_approved %}
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>Approved
+                                                </span>
+                                                {% if donor.is_available %}
+                                                    <br><span class="badge bg-info mt-1">Available</span>
+                                                {% else %}
+                                                    <br><span class="badge bg-secondary mt-1">Unavailable</span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span class="badge bg-warning">
+                                                    <i class="fas fa-clock me-1"></i>Pending
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group-vertical btn-group-sm" role="group">
+                                                {% if not donor.is_approved %}
+                                                    <a href="{{ url_for('approve_donor', donor_id=donor.id) }}" 
+                                                       class="btn btn-success btn-sm"
+                                                       onclick="return confirm('Approve this donor?')">
+                                                        <i class="fas fa-check me-1"></i>Approve
+                                                    </a>
+                                                    <a href="{{ url_for('reject_donor', donor_id=donor.id) }}" 
+                                                       class="btn btn-danger btn-sm"
+                                                       onclick="return confirm('Reject this donor application?')">
+                                                        <i class="fas fa-times me-1"></i>Reject
+                                                    </a>
+                                                {% else %}
+                                                    <button class="btn btn-outline-primary btn-sm" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#donorModal{{ donor.id }}">
+                                                        <i class="fas fa-eye me-1"></i>View Details
+                                                    </button>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-users text-muted" style="font-size: 4rem;"></i>
+                            <h4 class="text-muted mt-3">No Donors Found</h4>
+                            <p class="text-muted">No donor applications have been submitted yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Donor Detail Modals -->
+{% for donor_data in donors %}
+{% set donor = donor_data.donor %}
+{% set user = donor_data.user %}
+{% if donor.is_approved %}
+<div class="modal fade" id="donorModal{{ donor.id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-user me-2"></i>{{ user.first_name }} {{ user.last_name }} - Donor Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-primary mb-3">Personal Information</h6>
+                        <div class="mb-2"><strong>Email:</strong> {{ user.email }}</div>
+                        <div class="mb-2"><strong>Phone:</strong> {{ donor.phone }}</div>
+                        <div class="mb-2"><strong>Age:</strong> {{ donor.age }} years</div>
+                        <div class="mb-2"><strong>Weight:</strong> {{ donor.weight }} kg</div>
+                        <div class="mb-2"><strong>Blood Type:</strong> <span class="badge bg-danger">{{ donor.blood_type }}</span></div>
+                        <div class="mb-2"><strong>Address:</strong> {{ donor.address }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary mb-3">Donation History</h6>
+                        <div class="mb-2">
+                            <strong>Last Donation:</strong> 
+                            {% if donor.last_donation_date %}
+                                {{ donor.last_donation_date.strftime('%B %d, %Y') }}
+                            {% else %}
+                                Never donated
+                            {% endif %}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Eligibility:</strong> 
+                            {% if donor.can_donate() %}
+                                <span class="badge bg-success">Eligible</span>
+                            {% else %}
+                                <span class="badge bg-warning">Wait Period Active</span>
+                            {% endif %}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Availability:</strong> 
+                            {% if donor.is_available %}
+                                <span class="badge bg-info">Available</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Unavailable</span>
+                            {% endif %}
+                        </div>
+                        <div class="mb-2"><strong>Registration:</strong> {{ donor.created_at.strftime('%B %d, %Y') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+
+<script>
+    // Filter functionality
+    document.getElementById('statusFilter').addEventListener('change', filterTable);
+    document.getElementById('bloodTypeFilter').addEventListener('change', filterTable);
+
+    function filterTable() {
+        const statusFilter = document.getElementById('statusFilter').value;
+        const bloodTypeFilter = document.getElementById('bloodTypeFilter').value;
+        const rows = document.querySelectorAll('#donorsTable tbody tr');
+
+        rows.forEach(row => {
+            const status = row.getAttribute('data-status');
+            const bloodType = row.getAttribute('data-blood-type');
+            
+            let showRow = true;
+            
+            if (statusFilter && status !== statusFilter) {
+                showRow = false;
+            }
+            
+            if (bloodTypeFilter && bloodType !== bloodTypeFilter) {
+                showRow = false;
+            }
+            
+            row.style.display = showRow ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}
