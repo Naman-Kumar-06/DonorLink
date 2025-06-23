@@ -1,0 +1,5 @@
+email-validator>=2.2.0
+flask>=3.1.1
+flask-sqlalchemy>=3.1.1
+gunicorn>=23.0.0
+werkzeug>=3.1.3
